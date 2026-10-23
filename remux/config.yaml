@@ -1,5 +1,5 @@
 name: Remux
-version: "0.35.1"
+version: "0.37.0"
 slug: remux
 description: Jellyfin-compatible media server for local files and remote sources
 url: https://github.com/Arden144/haos-remux-app/tree/main/remux

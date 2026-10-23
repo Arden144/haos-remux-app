@@ -26,4 +26,4 @@ See [`../RESEARCH.md`](../RESEARCH.md) for the implementation constraints and th
 
 ## Upgrades
 
-This app pins Remux `0.35.1`. Updating Remux requires a corresponding app release that changes `version`; Home Assistant will then pull the matching versioned image tag.
+This app pins Remux `0.37.0`. Updating Remux requires a corresponding app release that changes `version`; Home Assistant will then pull the matching versioned image tag.
