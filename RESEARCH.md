@@ -10,7 +10,7 @@ Research completed 2026-10-02 against the current Home Assistant developer docum
 - Containers should remain protected. Avoid host networking, devices, capabilities, and Home Assistant/Supervisor API access unless a required feature cannot work without them. Mount data read-only when writes are unnecessary.
 - `/data` is persistent writable app state. Home Assistant path mappings are explicit; `media` is mounted at `/media`.
 - Ingress is appropriate only when the upstream web application supports it. A direct port remains appropriate for software that cannot use Home Assistant Ingress, such as Jellyfin clients.
-- `init: false` is required for an image that supplies its own command rather than the Home Assistant S6 init system.
+- Use `init: true` for a process that needs Docker's init process to forward signals and reap children. Use `init: false` for images with their own init system, such as Home Assistant's S6-based images.
 - Configuration and port labels belong in `translations/en.yaml` when the app exposes them in the UI.
 
 Sources:
@@ -41,13 +41,22 @@ Remux release `v0.35.1` publishes `ghcr.io/lostb1t/remux:0.35.1` as an OCI image
 - `GET /health` for health checks.
 - Jellyfin FFmpeg included in the image.
 
-The app pins that release in `remux/config.yaml`, maps Home Assistant media read-only at `/media`, exposes the Remux dashboard at `/admin/`, publishes TCP 3000 for Jellyfin clients, and checks `/health` through the Supervisor watchdog. Ingress is deliberately disabled: Remux performs absolute redirects from `/` to its Jellyfin client UI at `/web/`, which cannot retain the Home Assistant ingress prefix. `legacy: true` is intentional: the upstream image is not a Home Assistant-built image and does not provide Home Assistant image labels. It allows Supervisor to use this repository's app configuration while retaining the upstream prebuilt image.
+The initial app used that release directly with `legacy: true`, because the upstream image does not provide Home Assistant image labels. The app maps Home Assistant media read-only at `/media`, exposes the Remux dashboard at `/admin/`, publishes TCP 3000 for Jellyfin clients, and checks `/health` through the Supervisor watchdog. Ingress is deliberately disabled: Remux performs absolute redirects from `/` to its Jellyfin client UI at `/web/`, which cannot retain the Home Assistant ingress prefix.
+
+### Packaging correction, 2026-10-23
+
+App version `0.37.0-1` builds a minimal wrapper around `ghcr.io/lostb1t/remux:0.37.0`, which also provides Linux `amd64` and `arm64` images. Removing the `image` field lets Supervisor build and label the wrapper locally, while the Dockerfile pins the upstream release independently of the app's packaging revision. `legacy: true` is no longer needed.
+
+The upstream image runs `./remux-server` directly and has no init system. With the previous `init: false` setting, Remux ran as PID 1. Supervisor logs showed both `0.35.1` and `0.37.0` exiting with code 137 after the stop timeout. The headless server's `bind_and_serve` implementation does not register a SIGTERM handler. The app now uses `init: true` for Docker init to forward signals and reap child processes. Application-level graceful cleanup still requires changes to Remux. These observations do not establish the cause of any database corruption.
 
 Sources:
 
 - [Remux release v0.35.1](https://github.com/lostb1t/remux/releases/tag/v0.35.1)
 - [Remux Dockerfile](https://github.com/lostb1t/remux/blob/v0.35.1/docker/Dockerfile)
 - [Remux README](https://github.com/lostb1t/remux/tree/v0.35.1)
+- [Remux v0.37.0 Dockerfile](https://github.com/lostb1t/remux/blob/v0.37.0/docker/Dockerfile)
+- [Remux v0.37.0 server lifecycle](https://github.com/lostb1t/remux/blob/v0.37.0/crates/remux-server/src/lib.rs)
+- [Supervisor image build labels](https://github.com/home-assistant/supervisor/blob/2026.10.3/supervisor/apps/build.py)
 
 ## Account Management Decision
 

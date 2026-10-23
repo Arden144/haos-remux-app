@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.37.0-1
+
+- Enable Docker init to forward termination signals to Remux and reap child processes.
+- Build a minimal wrapper around the upstream Remux `0.37.0` image so app packaging revisions can be released independently.
+
 ## 0.37.0
 
 - Update Remux to [v0.37.0](https://github.com/lostb1t/remux/releases/tag/v0.37.0).

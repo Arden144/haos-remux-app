@@ -26,4 +26,8 @@ See [`../RESEARCH.md`](../RESEARCH.md) for the implementation constraints and th
 
 ## Upgrades
 
-This app pins Remux `0.37.0`. Updating Remux requires a corresponding app release that changes `version`; Home Assistant will then pull the matching versioned image tag.
+App version `0.37.0-1` uses Remux `0.37.0`. The app version includes a packaging revision so Home Assistant can offer packaging fixes independently of upstream Remux releases.
+
+Home Assistant builds a minimal wrapper from `Dockerfile`, which pins `ghcr.io/lostb1t/remux:0.37.0`. This downloads the upstream image without compiling Remux. Updating upstream Remux requires changing that image tag and releasing a new app version.
+
+Docker init is enabled to forward termination signals to Remux and reap child processes. It does not add application-level graceful shutdown handling to Remux.
