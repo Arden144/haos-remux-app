@@ -45,7 +45,9 @@ The initial app used that release directly with `legacy: true`, because the upst
 
 ### Packaging correction, 2026-10-23
 
-App version `0.37.0-1` builds a minimal wrapper around `ghcr.io/lostb1t/remux:0.37.0`, which also provides Linux `amd64` and `arm64` images. Removing the `image` field lets Supervisor build and label the wrapper locally, while the Dockerfile pins the upstream release independently of the app's packaging revision. `legacy: true` is no longer needed.
+App version `0.37.0.1` builds a minimal wrapper around `ghcr.io/lostb1t/remux:0.37.0`, which also provides Linux `amd64` and `arm64` images. Removing the `image` field lets Supervisor build and label the wrapper locally, while the Dockerfile pins the upstream release independently of the app's packaging revision. `legacy: true` is no longer needed.
+
+The first wrapper release used `0.37.0-1`, which SemVer treats as a prerelease older than `0.37.0`. Home Assistant's update entity requires the latest version to compare greater than the installed version. Packaging revisions now use a fourth numeric component, such as `0.37.0.1`; AwesomeVersion explicitly supports comparing four-component versions with their three-component base.
 
 The upstream image runs `./remux-server` directly and has no init system. With the previous `init: false` setting, Remux ran as PID 1. Supervisor logs showed both `0.35.1` and `0.37.0` exiting with code 137 after the stop timeout. The headless server's `bind_and_serve` implementation does not register a SIGTERM handler. The app now uses `init: true` for Docker init to forward signals and reap child processes. Application-level graceful cleanup still requires changes to Remux. These observations do not establish the cause of any database corruption.
 
@@ -57,6 +59,8 @@ Sources:
 - [Remux v0.37.0 Dockerfile](https://github.com/lostb1t/remux/blob/v0.37.0/docker/Dockerfile)
 - [Remux v0.37.0 server lifecycle](https://github.com/lostb1t/remux/blob/v0.37.0/crates/remux-server/src/lib.rs)
 - [Supervisor image build labels](https://github.com/home-assistant/supervisor/blob/2026.10.3/supervisor/apps/build.py)
+- [Home Assistant update version comparison](https://github.com/home-assistant/core/blob/2026.10.2/homeassistant/components/update/__init__.py)
+- [AwesomeVersion comparison tests](https://github.com/ludeeus/awesomeversion/blob/main/tests/test_compare.py)
 
 ## Account Management Decision
 

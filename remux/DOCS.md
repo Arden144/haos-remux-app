@@ -26,7 +26,7 @@ See [`../RESEARCH.md`](../RESEARCH.md) for the implementation constraints and th
 
 ## Upgrades
 
-App version `0.37.0-1` uses Remux `0.37.0`. The app version includes a packaging revision so Home Assistant can offer packaging fixes independently of upstream Remux releases.
+App version `0.37.0.1` uses Remux `0.37.0`. The fourth dot-separated number is a packaging revision, supported by Home Assistant's version comparator, so packaging fixes can be released independently of upstream Remux releases. This is a four-component version rather than strict SemVer; unlike a hyphen suffix, it sorts after the corresponding upstream version.
 
 Home Assistant builds a minimal wrapper from `Dockerfile`, which pins `ghcr.io/lostb1t/remux:0.37.0`. This downloads the upstream image without compiling Remux. Updating upstream Remux requires changing that image tag and releasing a new app version.
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.37.0.1
+
+- Use a fourth numeric version component for packaging revisions so Home Assistant treats this release as newer than `0.37.0`.
+- Retain Docker init and the wrapper pinned to upstream Remux `0.37.0`.
+
 ## 0.37.0-1
 
 - Enable Docker init to forward termination signals to Remux and reap child processes.
