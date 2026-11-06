@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.39.0
+
+- Update Remux to [v0.39.0](https://github.com/lostb1t/remux/releases/tag/v0.39.0).
+
 ## 0.37.0.1
 
 - Use a fourth numeric version component for packaging revisions so Home Assistant treats this release as newer than `0.37.0`.
