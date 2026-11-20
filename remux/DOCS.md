@@ -26,8 +26,8 @@ See [`../RESEARCH.md`](../RESEARCH.md) for the implementation constraints and th
 
 ## Upgrades
 
-App version `0.39.0` uses Remux `0.39.0`.
+App version `0.41.1` uses Remux `0.41.1`.
 
-Home Assistant builds a minimal wrapper from `Dockerfile`, which pins `ghcr.io/lostb1t/remux:0.39.0`. This downloads the upstream image without compiling Remux. Updating upstream Remux requires changing that image tag and releasing a new app version.
+Home Assistant builds a minimal wrapper from `Dockerfile`, which pins `ghcr.io/lostb1t/remux:0.41.1`. This downloads the upstream image without compiling Remux. Updating upstream Remux requires changing that image tag and releasing a new app version.
 
 Docker init is enabled to forward termination signals to Remux and reap child processes. It does not add application-level graceful shutdown handling to Remux.
