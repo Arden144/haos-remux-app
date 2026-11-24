@@ -1,5 +1,5 @@
 name: Remux
-version: "0.42.0.1"
+version: "0.42.0.2"
 slug: remux
 description: Jellyfin-compatible media server for local files and remote sources
 url: https://github.com/Arden144/haos-remux-app/tree/main/remux
@@ -7,6 +7,7 @@ arch:
   - aarch64
   - amd64
 init: true
+timeout: 60
 watchdog: http://[HOST]:[PORT:3000]/health
 ports:
   3000/tcp: 3000

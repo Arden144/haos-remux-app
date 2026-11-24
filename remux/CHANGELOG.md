@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.42.0.2
+
+- Allow up to 60 seconds for Remux to finish graceful shutdown before Home Assistant stops it forcefully.
+
 ## 0.42.0.1
 
 - Use `ghcr.io/arden144/remux:nightly` with coordinated graceful shutdown and restart handling.
