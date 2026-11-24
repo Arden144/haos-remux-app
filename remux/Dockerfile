@@ -1,1 +1,1 @@
-FROM ghcr.io/lostb1t/remux:0.42.0
+FROM ghcr.io/arden144/remux:nightly

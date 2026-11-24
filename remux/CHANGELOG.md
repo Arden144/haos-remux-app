@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.42.0.1
+
+- Use `ghcr.io/arden144/remux:nightly` with coordinated graceful shutdown and restart handling.
+
 ## 0.42.0
 
 - Update Remux to [v0.42.0](https://github.com/lostb1t/remux/releases/tag/v0.42.0).
